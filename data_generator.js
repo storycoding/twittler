@@ -14,6 +14,34 @@ streams.users.douglascalhoun = [];
 window.users = Object.keys(streams.users);
 
 // utility function for adding tweets to our data structures
+
+
+var displayDate = function() {
+  var today = new Date();
+
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; 
+  var yyyy = today.getFullYear();
+  var hours = today.getHours();
+  var mins = today.getMinutes();
+  var seconds = today.getSeconds();
+  if(dd<10) 
+    {
+      dd='0'+dd;
+    } 
+
+  if(mm<10) 
+  {
+      mm='0'+mm;
+  } 
+
+
+var timeStamp = " at " + hours + ":" + mins + ":" + seconds;
+  //today = ' at ' + hours + ":" + mins + " - " + mm + '.' + dd + '.' + yyyy;
+  return(timeStamp);
+}
+
+
 var addTweet = function(newTweet){
   var username = newTweet.user;
   streams.users[username].push(newTweet);
@@ -31,7 +59,7 @@ var opening = ['just', '', '', '', '', 'ask me how i', 'completely', 'nearly', '
 var verbs = ['downloaded', 'interfaced', 'deployed', 'developed', 'built', 'invented', 'experienced', 'navigated', 'aided', 'enjoyed', 'engineered', 'installed', 'debugged', 'delegated', 'automated', 'formulated', 'systematized', 'overhauled', 'computed'];
 var objects = ['my', 'your', 'the', 'a', 'my', 'an entire', 'this', 'that', 'the', 'the big', 'a new form of'];
 var nouns = ['cat', 'koolaid', 'system', 'city', 'worm', 'cloud', 'potato', 'money', 'way of life', 'belief system', 'security system', 'bad decision', 'future', 'life', 'pony', 'mind'];
-var tags = ['#techlife', '#burningman', '#sf', 'but only i know how', 'for real', '#sxsw', '#ballin', '#omg', '#yolo', '#magic', '', '', '', ''];
+var tags = ['#techlife', '#burningman', '#sf', 'but only i know how', 'for real', '#sxsw', '#ballin', '#omg', '#yolo', '#magic', '#soulfood', '', '', ''];
 
 var randomMessage = function(){
   return [randomElement(opening), randomElement(verbs), randomElement(objects), randomElement(nouns), randomElement(tags)].join(' ');
@@ -41,20 +69,48 @@ var randomMessage = function(){
 var generateRandomTweet = function(){
   var tweet = {};
   tweet.user = randomElement(users);
-  tweet.message = randomMessage();
+  tweet.message = randomMessage() + displayDate();
   tweet.created_at = new Date();
   addTweet(tweet);
+  //add the element to the dom here
 };
 
-for(var i = 0; i < 10; i++){
+//limits to 10 tweets
+for(var i = 0; i <10; i++){
   generateRandomTweet();
 }
 
+var displayAllTweets = function() {
+  $('#timeline').text("");
+  for (var i = 0; i < streams.home.length; i++) {
+    var tweet = streams.home[i];
+    var $tweet = $('<div></div>');
+    $tweet.text('@' + tweet.user + ': ' + tweet.message);
+    $tweet.appendTo($('#timeline'))
+    
+  }
+};
+
 var scheduleNextTweet = function(){
   generateRandomTweet();
+  displayAllTweets();
   setTimeout(scheduleNextTweet, Math.random() * 1500);
 };
+
+//this runs on a loop
 scheduleNextTweet();
+
+
+
+displayAllTweets();
+
+var hello = function () {
+  console.log("hello");
+}
+
+hello();
+//this should run on a loop too
+
 
 // utility function for letting students add "write a tweet" functionality
 // (note: not used by the rest of this file.)

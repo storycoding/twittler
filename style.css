@@ -1,0 +1,70 @@
+
+
+.wrapper {
+    height: 110px;
+    border-radius: 3px;
+    padding: 10px;
+    display: grid;
+    /* grid-template-columns: 250px 250px 250px; */
+    grid-gap: 10px;
+}
+
+/* from my game 
+.unit {
+        display: grid;
+        height: inherit;
+        width: 250px;
+        grid-gap: 20px;
+        border-radius: inherit;
+        background-color: white;
+        box-shadow: 0px 1px 2px #AEBFCC;
+    }
+
+        .portrait {
+            grid-column: 1;
+            height : 100px;
+            margin: auto;
+            margin-left: 5px; 
+            margin-right: 5px;
+            image-resolution: from-image;
+            border-radius: inherit;
+            background-color: #CCBEAE;
+        }
+
+        .statsWindow {
+            grid-column: 2;
+            margin: auto;
+            margin-left: 5px;
+        }
+*/
+
+
+.dashboard-left {
+	grid-column: 1/3;
+	background: orange;
+	width: 300px;
+}
+
+.
+
+.dashboard-right {
+	grid-column: 3/3;
+	background: orange;
+	width: 300px;
+}
+
+/*  
+
+From Original Twitter:
+.AppContent;
+
+*/
+.AppContent {
+	grid-column: 2/3;
+    padding: 56px 14px 15px;
+    padding-top: 56px;
+    padding-right: 14px;
+    padding-bottom: 15px;
+    padding-left: 14px;
+    position: relative;
+}
