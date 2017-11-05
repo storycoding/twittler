@@ -4,23 +4,24 @@
             <script src="jquery.js"></script>
             <script src="data_generator.js"></script>
             <link rel="stylesheet" href="style.css">
+            <title id="title">Twittler</title>
         </head>
 
         <body>
-            <span class="h1">Tweets: </span><span id="tweetCounter" class="h1">0</span> <span class="h1">Score: </span><span id="scoreHUD" class="h1">0</span>
+            <span class="h1">Tweets: </span><span id="tweetCounter" class="h1">0</span>
             <div id="doc" class="route-home">
             <div class="topbar">
                 <a id="topbar"> top bar</a>
             </div>
 
             <div id="page-container" class="wrapper">
-                <div class="dashboard-left">dashboard-left</div>
+                <div class="dashboard-left"></div>
 
                 <div id="timeline" class="timeline">
                     </ol>
                 </div>
 
-                <div class="dashboard-right">dashboard-right</div>
+                <div class="dashboard-right"></div>
             </div>
 
 
@@ -33,7 +34,7 @@
                 $(document).ready(function(){
                     var $body = $('body');
                     //$body.html('');
-                    update();
+                    //update();
                     scheduleNextTweet();
                     scoreUpdate();
                     // var index = streams.home.length - 1;

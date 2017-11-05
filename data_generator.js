@@ -9,8 +9,8 @@ streams.home = [];
 streams.users = {};
 streams.users.shawndrost = {};
 streams.users.shawndrost.tweets = [];
-streams.users.shawndrost.href = "//https://twitter.com/shawndrost";
-//https://twitter.com/shawndrost
+streams.users.shawndrost.href = "https://twitter.com/shawndrost";
+
 streams.users.sharksforcheap = {};
 streams.users.sharksforcheap.tweets = [];
 streams.users.sharksforcheap.href = "https://twitter.com/sharksforcheap"
@@ -18,11 +18,10 @@ streams.users.sharksforcheap.href = "https://twitter.com/sharksforcheap"
 streams.users.mracus = {};
 streams.users.mracus.tweets = [];
 streams.users.mracus.href = "https://twitter.com/mracus"
-//https://twitter.com/mracus
 streams.users.douglascalhoun = {};
 streams.users.douglascalhoun.tweets = [];
 streams.users.douglascalhoun.href = "https://twitter.com/douglascalhoun"
-//https://twitter.com/douglascalhoun
+
 window.users = Object.keys(streams.users);
 
 
@@ -34,7 +33,7 @@ var score = 0;
 var update = function() {
   $('#timeline').text("");
   displayAllTweets();
-  setTimeout(update, 500); //half second
+  //setTimeout(update, 500); //half second
 };
 
 Math.floor()
@@ -44,23 +43,6 @@ var scoreUpdate = function() {
     $('#scoreHUD').text(score.toFixed(1));
    setTimeout(scoreUpdate, 100);
 }
-
-var createTimeStamp = function() {
-  var today = new Date();
-
-  var dd = today.getDate();
-  var mm = today.getMonth()+1; 
-  var yyyy = today.getFullYear();
-
-  var hours = today.getHours();
-  var mins = today.getMinutes();
-  var seconds = today.getSeconds();
-  
-  var timeStamp = " at " + hours + ":" + mins + ":" + seconds;
-
-  return(timeStamp);
-};
-
 
 var addTweet = function(newTweet){
   var username = newTweet.user;
@@ -90,23 +72,25 @@ var generateRandomTweet = function(){
   var tweet = {};
   tweet.user = randomElement(users);
   tweet.message = randomMessage();
-  tweet.created_at = createTimeStamp();
+  tweet.created_at = new Date();
   tweet.href = streams.users[tweet.user].href;
   addTweet(tweet);
   //add the element to the dom here
 };
 
 
+
 var displayAllTweets = function() {
   for (var i = 0; i < streams.home.length; i++) {
     var tweet = streams.home[i];
-    var $tweet = $('<p></p>');
+    var $tweet = $('<div></d1iv>');
+    var profileLink = "http://www.twitter.com/" + tweet.user;
 
     $tweet.addClass(".tweet");
       var $userName = $('<a></a>');
       $userName.text('@' + tweet.user + " ");
       $userName.addClass('.userName');
-      $userName.attr("href", "http://www.google.com/"); // change to username.href in object
+      $userName.attr("href",profileLink);
     
       var $userTweet = $('<span></span>');
       $userTweet.addClass('.tweetText');
@@ -114,17 +98,13 @@ var displayAllTweets = function() {
 
       var $userTimeStamp = $('<p></p>');
       $userTimeStamp.addClass('.tweetText');
-      $userTimeStamp.text(tweet.created_at);
+      $userTimeStamp.text(timeSince(tweet.created_at) + ' ago');
 
     //appending
     $userName.appendTo($tweet);
     $userTweet.appendTo($tweet);
     $userTimeStamp.appendTo($tweet);
     $tweet.appendTo($('#timeline'));
-
-    //make the tweet holder
-    //make the username a clickable span object with hyperlink
-    //mak
   }
 };
 
@@ -132,6 +112,7 @@ var displayAllTweets = function() {
 var scheduleNextTweet = function(){
   generateRandomTweet();
   $("#tweetCounter").text(streams.home.length);
+  update()
   setTimeout(scheduleNextTweet, Math.floor(Math.random() * (5000 - 1000) + 1000));
 };
 
@@ -149,4 +130,23 @@ var writeTweet = function(message){
   addTweet(tweet);
 };
 
-
+//imported from original twitter
+function timeSince(timeStamp) {
+    var now = new Date(),
+      secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+    if(secondsPast < 60){
+      return parseInt(secondsPast) + 's';
+    }
+    if(secondsPast < 3600){
+      return parseInt(secondsPast/60) + 'm';
+    }
+    if(secondsPast <= 86400){
+      return parseInt(secondsPast/3600) + 'h';
+    }
+    if(secondsPast > 86400){
+        day = timeStamp.getDate();
+        month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+        year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+        return day + " " + month + year;
+    }
+  }
