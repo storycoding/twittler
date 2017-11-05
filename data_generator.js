@@ -7,44 +7,64 @@
 window.streams = {};
 streams.home = [];
 streams.users = {};
-streams.users.shawndrost = [];
-streams.users.sharksforcheap = [];
-streams.users.mracus = [];
-streams.users.douglascalhoun = [];
+streams.users.shawndrost = {};
+streams.users.shawndrost.tweets = [];
+streams.users.shawndrost.href = "//https://twitter.com/shawndrost";
+//https://twitter.com/shawndrost
+streams.users.sharksforcheap = {};
+streams.users.sharksforcheap.tweets = [];
+streams.users.sharksforcheap.href = "https://twitter.com/sharksforcheap"
+//https://twitter.com/sharksforcheap
+streams.users.mracus = {};
+streams.users.mracus.tweets = [];
+streams.users.mracus.href = "https://twitter.com/mracus"
+//https://twitter.com/mracus
+streams.users.douglascalhoun = {};
+streams.users.douglascalhoun.tweets = [];
+streams.users.douglascalhoun.href = "https://twitter.com/douglascalhoun"
+//https://twitter.com/douglascalhoun
 window.users = Object.keys(streams.users);
+
 
 // utility function for adding tweets to our data structures
 
 
-var displayDate = function() {
+var score = 0;
+
+var update = function() {
+  $('#timeline').text("");
+  displayAllTweets();
+  setTimeout(update, 500); //half second
+};
+
+Math.floor()
+
+var scoreUpdate = function() {
+  score += 0.1;
+    $('#scoreHUD').text(score.toFixed(1));
+   setTimeout(scoreUpdate, 100);
+}
+
+var createTimeStamp = function() {
   var today = new Date();
 
   var dd = today.getDate();
   var mm = today.getMonth()+1; 
   var yyyy = today.getFullYear();
+
   var hours = today.getHours();
   var mins = today.getMinutes();
   var seconds = today.getSeconds();
-  if(dd<10) 
-    {
-      dd='0'+dd;
-    } 
+  
+  var timeStamp = " at " + hours + ":" + mins + ":" + seconds;
 
-  if(mm<10) 
-  {
-      mm='0'+mm;
-  } 
-
-
-var timeStamp = " at " + hours + ":" + mins + ":" + seconds;
-  //today = ' at ' + hours + ":" + mins + " - " + mm + '.' + dd + '.' + yyyy;
   return(timeStamp);
-}
+};
 
 
 var addTweet = function(newTweet){
   var username = newTweet.user;
-  streams.users[username].push(newTweet);
+  streams.users[username].tweets.push(newTweet);
   streams.home.push(newTweet);
 };
 
@@ -69,47 +89,52 @@ var randomMessage = function(){
 var generateRandomTweet = function(){
   var tweet = {};
   tweet.user = randomElement(users);
-  tweet.message = randomMessage() + displayDate();
-  tweet.created_at = new Date();
+  tweet.message = randomMessage();
+  tweet.created_at = createTimeStamp();
+  tweet.href = streams.users[tweet.user].href;
   addTweet(tweet);
   //add the element to the dom here
 };
 
-//limits to 10 tweets
-for(var i = 0; i <10; i++){
-  generateRandomTweet();
-}
 
 var displayAllTweets = function() {
-  $('#timeline').text("");
   for (var i = 0; i < streams.home.length; i++) {
     var tweet = streams.home[i];
-    var $tweet = $('<div></div>');
-    $tweet.text('@' + tweet.user + ': ' + tweet.message);
-    $tweet.appendTo($('#timeline'))
+    var $tweet = $('<p></p>');
+
+    $tweet.addClass(".tweet");
+      var $userName = $('<a></a>');
+      $userName.text('@' + tweet.user + " ");
+      $userName.addClass('.userName');
+      $userName.attr("href", "http://www.google.com/"); // change to username.href in object
     
+      var $userTweet = $('<span></span>');
+      $userTweet.addClass('.tweetText');
+      $userTweet.text(tweet.message);
+
+      var $userTimeStamp = $('<p></p>');
+      $userTimeStamp.addClass('.tweetText');
+      $userTimeStamp.text(tweet.created_at);
+
+    //appending
+    $userName.appendTo($tweet);
+    $userTweet.appendTo($tweet);
+    $userTimeStamp.appendTo($tweet);
+    $tweet.appendTo($('#timeline'));
+
+    //make the tweet holder
+    //make the username a clickable span object with hyperlink
+    //mak
   }
 };
 
+//is displaying lots at a time
 var scheduleNextTweet = function(){
   generateRandomTweet();
-  displayAllTweets();
-  setTimeout(scheduleNextTweet, Math.random() * 1500);
+  $("#tweetCounter").text(streams.home.length);
+  setTimeout(scheduleNextTweet, Math.floor(Math.random() * (5000 - 1000) + 1000));
 };
 
-//this runs on a loop
-scheduleNextTweet();
-
-
-
-displayAllTweets();
-
-var hello = function () {
-  console.log("hello");
-}
-
-hello();
-//this should run on a loop too
 
 
 // utility function for letting students add "write a tweet" functionality
@@ -123,3 +148,5 @@ var writeTweet = function(message){
   tweet.message = message;
   addTweet(tweet);
 };
+
+

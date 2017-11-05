@@ -1,53 +1,52 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div id="doc" class="route-home">
-      <div class="topbar">
-        <a id="topbar"> top bar</a>
-      </div>
+    <html>
+        <head>
+            <script src="jquery.js"></script>
+            <script src="data_generator.js"></script>
+            <link rel="stylesheet" href="style.css">
+        </head>
 
-      <table id="page-container" class="AppContent wrapper wrapper-home">
-        
-      <div class="dashboard-left">dashboard-left</div>
+        <body>
+            <span class="h1">Tweets: </span><span id="tweetCounter" class="h1">0</span> <span class="h1">Score: </span><span id="scoreHUD" class="h1">0</span>
+            <div id="doc" class="route-home">
+            <div class="topbar">
+                <a id="topbar"> top bar</a>
+            </div>
 
-      <div id="timeline" class="timeline">
-        
-        <ol id="stream-items">
-          <li class="sample-tweet">sample-tweet</li>
-        </ol>
+            <div id="page-container" class="wrapper">
+                <div class="dashboard-left">dashboard-left</div>
 
-      </div>
+                <div id="timeline" class="timeline">
+                    </ol>
+                </div>
 
-      <div class="dashboard-right">dashboard-right</div>
-
-      </table>
+                <div class="dashboard-right">dashboard-right</div>
+            </div>
 
 
-      
-    </div>
-    <script>
 
-      //this runs once
-      $(document).ready(function(){
-        var $body = $('body');
-        //$body.html('');
+            </div>
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($('#timeline')) //$tweet.appendTo($('timeline'));
-          index -= 1;
-        }
+            <script>
 
-      });
+                //this runs once
+                $(document).ready(function(){
+                    var $body = $('body');
+                    //$body.html('');
+                    update();
+                    scheduleNextTweet();
+                    scoreUpdate();
+                    // var index = streams.home.length - 1;
+                    // while(index >= 0){
+                    //     var tweet = streams.home[index];
+                    //     var $tweet = $('<div></div>');
+                    //     $tweet.text('@' + tweet.user + ': ' + tweet.message);
+                    //     $tweet.appendTo($('#timeline')) //$tweet.appendTo($('timeline'));
+                    //     index -= 1;
+                    // }
 
-    </script>
-  </body>
-</html>
+                });
+
+            </script>
+        </body>
+    </html>
