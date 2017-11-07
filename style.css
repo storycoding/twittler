@@ -1,4 +1,4 @@
-/*
+/* Grayscales
 80%b = #62686B
 40%b = #9CA5AB
 30%b = #BFCAD1
@@ -19,34 +19,7 @@ body {
     grid-gap: 10px;
 }
 
-/* from my game 
-.unit {
-        display: grid;
-        height: inherit;
-        width: 250px;
-        grid-gap: 20px;
-        border-radius: inherit;
-        background-color: white;
-        box-shadow: 0px 1px 2px #AEBFCC;
-    }
 
-        .portrait {
-            grid-column: 1;
-            height : 100px;
-            margin: auto;
-            margin-left: 5px; 
-            margin-right: 5px;
-            image-resolution: from-image;
-            border-radius: inherit;
-            background-color: #CCBEAE;
-        }
-
-        .statsWindow {
-            grid-column: 2;
-            margin: auto;
-            margin-left: 5px;
-        }
-*/
 a {
     color: white;
     text-decoration: none;
@@ -84,12 +57,7 @@ p{
 	box-shadow: 0px 1px 2px #62686B;
 }
 
-/*  
 
-From Original Twitter:
-.AppContent;
-
-*/
 .AppContent {
 	grid-column: 2/3;
     padding: 56px 14px 15px;
@@ -101,11 +69,16 @@ From Original Twitter:
 }
 
 .tweet {
-    background-color: white;
+    background-color: #BFCAD1;
     border-radius: 3px;
     box-shadow: 0px 1px 2px #62686B;
     }
 
+.tweetTimeStamp {
+    color: #9CA5AB;
+}
+/*
 .tweetText {
     color: white;
     }
+ /*

@@ -36,13 +36,12 @@ var update = function() {
   //setTimeout(update, 500); //half second
 };
 
-Math.floor()
 
 var scoreUpdate = function() {
   score += 0.1;
     $('#scoreHUD').text(score.toFixed(1));
    setTimeout(scoreUpdate, 100);
-}
+};
 
 var addTweet = function(newTweet){
   var username = newTweet.user;
@@ -84,21 +83,21 @@ var displayAllTweets = function() {
   for (var i = 0; i < streams.home.length; i++) {
     var tweet = streams.home[i];
     var $tweet = $('<div></d1iv>');
+      $tweet.addClass("tweet");
     var profileLink = "http://www.twitter.com/" + tweet.user;
-
-    $tweet.addClass(".tweet");
-      var $userName = $('<a></a>');
+     
+    var $userName = $('<a></a>');
       $userName.text('@' + tweet.user + " ");
-      $userName.addClass('.userName');
+      $userName.addClass('userName');
       $userName.attr("href",profileLink);
     
-      var $userTweet = $('<span></span>');
-      $userTweet.addClass('.tweetText');
+    var $userTweet = $('<span></span>');
+      $userTweet.addClass('tweetText');
       $userTweet.text(tweet.message);
 
-      var $userTimeStamp = $('<p></p>');
-      $userTimeStamp.addClass('.tweetText');
-      $userTimeStamp.text(timeSince(tweet.created_at) + ' ago');
+    var $userTimeStamp = $('<span></span>');
+      $userTimeStamp.addClass('tweetTimeStamp');
+      $userTimeStamp.text("   " + timeSince(tweet.created_at) + ' ago');
 
     //appending
     $userName.appendTo($tweet);
@@ -112,7 +111,7 @@ var displayAllTweets = function() {
 var scheduleNextTweet = function(){
   generateRandomTweet();
   $("#tweetCounter").text(streams.home.length);
-  update()
+  update();
   setTimeout(scheduleNextTweet, Math.floor(Math.random() * (5000 - 1000) + 1000));
 };
 
