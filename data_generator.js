@@ -112,6 +112,7 @@ var scheduleNextTweet = function(){
   generateRandomTweet();
   $("#tweetCounter").text(streams.home.length);
   update();
+  tweetSFX.play();
   setTimeout(scheduleNextTweet, Math.floor(Math.random() * (5000 - 1000) + 1000));
 };
 
@@ -128,6 +129,9 @@ var writeTweet = function(message){
   tweet.message = message;
   addTweet(tweet);
 };
+
+var tweetSFX = new Audio();
+tweetSFX.src = "audio/smw_map_move_to_spot.wav";
 
 //imported from original twitter
 function timeSince(timeStamp) {
