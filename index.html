@@ -8,21 +8,25 @@
         </head>
 
         <body>
-            <span class="h1">Tweets: </span><span id="tweetCounter" class="h1">0</span>
             <div id="doc" class="route-home">
-            <div class="topbar">
-                <a id="topbar"> top bar</a>
-            </div>
 
-            <div id="page-container" class="wrapper">
-                <div class="dashboard-left"></div>
+                <div id="page-container" class="wrapper">
 
-                <div id="timeline" class="timeline">
-                    </ol>
+                    <div class="userTweetBox">
+
+                        <input type="userInput" name="input" id="input" placeholder="what's on your mind?">
+
+                        <button type="button" class="button" id="submit">tweet</button>
+
+                    </div>
+                    
+
+                    <div id="timeline" class="timeline">
+                        </ol>
+                    </div>
+
+                    <!--div class="dashboard-right"></div-->
                 </div>
-
-                <div class="dashboard-right"></div>
-            </div>
 
 
 
@@ -30,21 +34,11 @@
 
             <script>
 
-                //this runs once
                 $(document).ready(function(){
                     var $body = $('body');
-                    //$body.html('');
-                    //update();
+                    addButtons();
+                    //starts the recursive main function
                     scheduleNextTweet();
-                    scoreUpdate();
-                    // var index = streams.home.length - 1;
-                    // while(index >= 0){
-                    //     var tweet = streams.home[index];
-                    //     var $tweet = $('<div></div>');
-                    //     $tweet.text('@' + tweet.user + ': ' + tweet.message);
-                    //     $tweet.appendTo($('#timeline')) //$tweet.appendTo($('timeline'));
-                    //     index -= 1;
-                    // }
 
                 });
 

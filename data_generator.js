@@ -7,6 +7,10 @@
 window.streams = {};
 streams.home = [];
 streams.users = {};
+
+streams.users.visitor = {}; //stores user tweets
+streams.users.visitor.tweets = [];
+
 streams.users.shawndrost = {};
 streams.users.shawndrost.tweets = [];
 streams.users.shawndrost.href = "https://twitter.com/shawndrost";
@@ -14,10 +18,11 @@ streams.users.shawndrost.href = "https://twitter.com/shawndrost";
 streams.users.sharksforcheap = {};
 streams.users.sharksforcheap.tweets = [];
 streams.users.sharksforcheap.href = "https://twitter.com/sharksforcheap"
-//https://twitter.com/sharksforcheap
+
 streams.users.mracus = {};
 streams.users.mracus.tweets = [];
 streams.users.mracus.href = "https://twitter.com/mracus"
+
 streams.users.douglascalhoun = {};
 streams.users.douglascalhoun.tweets = [];
 streams.users.douglascalhoun.href = "https://twitter.com/douglascalhoun"
@@ -26,22 +31,11 @@ window.users = Object.keys(streams.users);
 
 
 // utility function for adding tweets to our data structures
-
-
-var score = 0;
-
 var update = function() {
   $('#timeline').text("");
   displayAllTweets();
-  //setTimeout(update, 500); //half second
 };
 
-
-var scoreUpdate = function() {
-  score += 0.1;
-    $('#scoreHUD').text(score.toFixed(1));
-   setTimeout(scoreUpdate, 100);
-};
 
 var addTweet = function(newTweet){
   var username = newTweet.user;
@@ -110,9 +104,8 @@ var displayAllTweets = function() {
 //is displaying lots at a time
 var scheduleNextTweet = function(){
   generateRandomTweet();
-  $("#tweetCounter").text(streams.home.length);
   update();
-  tweetSFX.play();
+  //tweetSFX.play();
   setTimeout(scheduleNextTweet, Math.floor(Math.random() * (5000 - 1000) + 1000));
 };
 
@@ -120,18 +113,56 @@ var scheduleNextTweet = function(){
 
 // utility function for letting students add "write a tweet" functionality
 // (note: not used by the rest of this file.)
+
+
+
 var writeTweet = function(message){
-  if(!visitor){
+
+
+  if(!streams.users.visitor){
+    console.log("invalid user");
     throw new Error('set the global visitor property!');
   }
+
+ 
+
   var tweet = {};
-  tweet.user = visitor;
+  tweet.user = "visitor";
   tweet.message = message;
+  tweet.created_at = new Date();
   addTweet(tweet);
+  update();
 };
+
+
+
+//if I use a function expression it runs last and causes crashing
+function addButtons() {
+
+  $("#submit").on("click", function(){
+
+  userInput = $("#input").val();
+
+  $("input")[0].value = "";
+  $("input")[0].placeholder = "anything else?";
+
+  var message = userInput;
+
+  
+
+  writeTweet(userInput);
+});
+
+}
+
+
+
 
 var tweetSFX = new Audio();
 tweetSFX.src = "audio/smw_map_move_to_spot.wav";
+
+
+
 
 //imported from original twitter
 function timeSince(timeStamp) {
