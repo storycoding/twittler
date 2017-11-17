@@ -78,6 +78,7 @@ var displayAllTweets = function() {
     var tweet = streams.home[i];
     var $tweet = $('<div></d1iv>');
       $tweet.addClass("tweet");
+      $tweet.addClass(streams.home[i].user);
     var profileLink = "http://www.twitter.com/" + tweet.user;
      
     var $userName = $('<a></a>');
@@ -141,27 +142,30 @@ function addButtons() {
 
   $("#submit").on("click", function(){
 
-  userInput = $("#input").val();
+    userInput = $("#input").val();
 
-  $("input")[0].value = "";
-  $("input")[0].placeholder = "anything else?";
+    $("input")[0].value = "";
+    $("input")[0].placeholder = "anything else?";
 
-  var message = userInput;
+    var message = userInput;    
 
-  
-
-  writeTweet(userInput);
-});
+    writeTweet(userInput);
+  });
 
 }
 
+//change the user text into a button type to show tweets of that user
+  //the tweet node text value should update with each recursion of scheduleNextTweet
 
+
+function showUserTweets(userClass) {
+  $('.tweet').hide();
+  $(user).show();
+}
 
 
 var tweetSFX = new Audio();
 tweetSFX.src = "audio/smw_map_move_to_spot.wav";
-
-
 
 
 //imported from original twitter
