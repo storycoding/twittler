@@ -6,34 +6,32 @@ window.streams = {};
 streams.home = [];
 streams.users = {};
 
-streams.users.visitor = {}; //where user tweets are stored
+streams.users.visitor = {};
 streams.users.visitor.tweets = [];
 
 streams.users.shawndrost = {};
 streams.users.shawndrost.tweets = [];
-streams.users.shawndrost.href = "https://twitter.com/shawndrost";
 
 streams.users.sharksforcheap = {};
 streams.users.sharksforcheap.tweets = [];
-streams.users.sharksforcheap.href = "https://twitter.com/sharksforcheap"
 
 streams.users.mracus = {};
 streams.users.mracus.tweets = [];
-streams.users.mracus.href = "https://twitter.com/mracus"
 
 streams.users.douglascalhoun = {};
 streams.users.douglascalhoun.tweets = [];
-streams.users.douglascalhoun.href = "https://twitter.com/douglascalhoun"
 
 window.users = Object.keys(streams.users);
 
-var opening = ['just', '', '', '', '', 'ask me how i', 'completely', 'nearly', 'productively', 'efficiently', 'last night i', 'the president', 'that wizard', 'a ninja', 'a seedy old man'];
+var opening = ['just', 'ask me how i', 'completely', 'nearly', 'productively', 'efficiently', 'last night i', 'the president', 'that wizard', 'a ninja', 'a seedy old man'];
 var verbs = ['downloaded', 'interfaced', 'deployed', 'developed', 'built', 'invented', 'experienced', 'navigated', 'aided', 'enjoyed', 'engineered', 'installed', 'debugged', 'delegated', 'automated', 'formulated', 'systematized', 'overhauled', 'computed'];
 var objects = ['my', 'your', 'the', 'a', 'my', 'an entire', 'this', 'that', 'the', 'the big', 'a new form of'];
 var nouns = ['cat', 'koolaid', 'system', 'city', 'worm', 'cloud', 'potato', 'money', 'way of life', 'belief system', 'security system', 'bad decision', 'future', 'life', 'pony', 'mind'];
-var tags = ['#techlife', '#burningman', '#sf', 'but only i know how', 'for real', '#sxsw', '#ballin', '#omg', '#yolo', '#magic', '#soulfood', '', '', ''];
+var tags = ['#techlife', '#burningman', '#sf', 'but only i know how', 'for real', '#sxsw', '#ballin', '#omg', '#yolo', '#magic', '#soulfood'];
 
 
+//what's visible by default
+var visibleClass = '.tweet';
 
 //=============================//
 //========= FUNCTIONS =========//
@@ -45,6 +43,7 @@ var randomElement = function(array) {
   return array[randomIndex];
 };
 
+
 //merges random elements into one message
 var randomMessage = function() {
   return [randomElement(opening), randomElement(verbs), randomElement(objects), randomElement(nouns), randomElement(tags)].join(' ');
@@ -55,13 +54,25 @@ var randomMessage = function() {
 var generateRandomTweet = function() {
 
   var tweet = {};
-  tweet.user = randomElement(users);
+
+  //to avoid using visitor as an automatic author
+  var generateUser = function() {
+    var user = randomElement(users);
+
+    if (user === "visitor") {
+      return generateUser();
+    }
+
+    return user;
+  }
+
+  tweet.user = generateUser();
   tweet.message = randomMessage();
   tweet.created_at = new Date();
-  tweet.href = streams.users[tweet.user].href;
 
   addTweet(tweet);
 };
+
 
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet) {
@@ -71,37 +82,53 @@ var addTweet = function(newTweet) {
 };
 
 
-
-
-//reappends all the tweets to the timeline
+//appends tweet objects to timeline
 var displayAllTweets = function() {
 
-  var tweetCount = document.getElementsByClassName("tweet").length;
 
-  for (var i = tweetCount; i < streams.home.length; i++) {
-    var tweet = streams.home[i];
+  //WIP
+  if (visibleClass === ".tweet") {
+    var tweetCount = document.getElementsByClassName("tweet").length;
+    var tweetStorage = streams.home;
+    //loop through streams.home.length
 
-    // var message = tweet.message;
-    // if (document.getElementsByClassName("tweet").length > 0) {
-    //   var domTweet = document.getElementsByClassName("tweet")[i].children[1].textContent; // returning undefined when i is greater than childnodes
-    //   if (message === domTweet) {
-    //   console.log("checks");
-    //   } else {
-    //   }
-    // }
+  } else {
+    var user = visibleClass.substring(1);
 
-    if (streams.home.length > document.getElementsByClassName("tweet").length) {
+    var tweetCount = document.getElementsByClassName(user).length;
+    var tweetStorage = streams.home; // change this into the user storage and use it
+    //loop through user tweets and perform the thing
+  }
+  //end of WIP
 
-      var $tweet = $('<div></d1iv>');
+  for (var i = tweetCount; i < tweetStorage.length; i++) {
+    var tweet = tweetStorage[i];
+    var user = tweetStorage[i].user;
+
+    if (tweetStorage.length > document.getElementsByClassName("tweet").length) {
+
+      var $tweet = $('<div></div>');
       $tweet.addClass("tweet");
-      $tweet.addClass(streams.home[i].user);
+      $tweet.addClass(user);
 
-      var profileLink = "http://www.twitter.com/" + tweet.user;
 
       var $userName = $('<a></a>');
       $userName.text('@' + tweet.user + " ");
-      $userName.addClass('userName');
-      $userName.attr("href",profileLink);
+
+
+      $userName.on("click", function() {
+
+        if (visibleClass === ".tweet") {
+          visibleClass = '.' + this.innerHTML.substring(1);
+          $('#timeline').text("");
+
+        } else {
+           visibleClass = '.tweet';
+          $('#timeline').text("");
+        }
+        
+        update();
+      })
 
       var $userTweet = $('<span></span>');
       $userTweet.addClass('tweetText');
@@ -115,16 +142,16 @@ var displayAllTweets = function() {
       $userName.appendTo($tweet);
       $userTweet.appendTo($tweet);
       $userTimeStamp.appendTo($tweet);
-      $tweet.appendTo($('#timeline'));
+
+
+      //if  this.class contains visibleClass append it
+      if (visibleClass.includes(user) || visibleClass.includes(".tweet") ) {
+        $tweet.appendTo($('#timeline'));
+      }
+      //repeating other tweets
+
     }
-
   }
-
-    //document.getElementsByClassName("tweet")[0].children[1].textContent
-    //compare with
-    //streams.home[0].message
-    //if there are new tweets not already appended to the parent node
-        //append them
 };
 
 
@@ -140,6 +167,7 @@ var scheduleNextTweet = function() {
   //tweetSFX.play(); - fun idea, but too annoying
   setTimeout(scheduleNextTweet, Math.floor(Math.random() * (5000 - 1000) + 1000));
 };
+
 
 //user tweets
 var writeTweet = function(message) {
@@ -158,62 +186,19 @@ var writeTweet = function(message) {
 };
 
 
-//WIP
-
-//stamps 1
-  var updateTimeStamps = function() {
-
-    var tweetCount = document.getElementsByClassName("tweet").length;
-
-    for (var i = 0; i < tweetCount; i++) {
-      var timeStamp = document.getElementsByClassName("tweet")[i].children[2];
-
-      //select the time stamp
-
-      timeStamp.textContent = "   " + timeSince(tweet.created_at) + ' ago'; // START HERE
-      timeStamp.text();  //access tweetTime
-
-      //update it
-    }
-  }
-
-//stamps 2
-
-
-//whenever a new tweet is created
-//iterate through all the tweets
 //update the time stamp
-
 var refreshTimeStamps = function() {
 
   var i = 0;
 
   $('#timeline').children().each(function () {
     var createdAt = streams.home[i].created_at;
-    this.children[2].innerHTML = timeSince(createdAt);
+    this.children[2].innerHTML = "   " + timeSince(createdAt) + ' ago';
 
     i++;
   });
 
 };
-
-//what's visible by default
-var isVisible = '.tweet';
-
-//if hiding is on, only show the items of classvalue
-//toggle hidden
-//toggle visible
-////////
-
-//change the user text into a button type to show tweets of that user
-  //the tweet node text value should update with each recursion of scheduleNextTweet
-  //allow the filter to stop the appeding of new tweets
-
-//apply this function to the userText
-function showUserTweets(userClass) {
-  $('.tweet').hide();
-  $(userClass).show();
-}
 
 
 //if I use a function expression it runs last and causes crashing
@@ -228,14 +213,24 @@ function addButtons() {
     var message = userInput;    
     writeTweet(userInput);
   });
+
 }
-
-
 
 
 var tweetSFX = new Audio();
 tweetSFX.src = "audio/smw_map_move_to_spot.wav";
 
+
+$(document).keypress(function(key) {
+    if(key.which == 13) {
+      userInput = $("#input").val();
+      $("input")[0].value = "";
+      $("input")[0].placeholder = "anything else?";
+
+      var message = userInput;    
+      writeTweet(userInput);
+    }
+});
 
 //imported from original twitter
 function timeSince(timeStamp) {
